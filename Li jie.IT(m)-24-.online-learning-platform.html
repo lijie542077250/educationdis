@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学课堂 - 专业的在线学习平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', 'Segoe UI', sans-serif;
+            background-color: #f8fafc;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 顶部导航栏 */
+        header {
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .top-bar {
+            background-color: #1a56db;
+            color: white;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+        
+        .top-bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .promo-text {
+            display: flex;
+            align-items: center;
+        }
+        
+        .promo-text i {
+            margin-right: 8px;
+            color: #ffd700;
+        }
+        
+        .top-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 13px;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            font-size: 32px;
+            color: #1a56db;
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            font-size: 26px;
+            font-weight: 700;
+            color: #1a56db;
+        }
+        
+        .logo-text span {
+            color: #ff6b35;
+        }
+        
+        .nav-center {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-center li {
+            margin: 0 15px;
+        }
+        
+        .nav-center a {
+            text-decoration: none;
+            color: #444;
+            font-weight: 500;
+            font-size: 16px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .nav-center a:hover {
+            background-color: #f0f7ff;
+            color: #1a56db;
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-box {
+            position: relative;
+            margin-right: 20px;
+        }
+        
+        .search-box input {
+            padding: 10px 15px 10px 40px;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            width: 240px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: #1a56db;
+            box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .btn-login {
+            background-color: transparent;
+            color: #1a56db;
+            border: 1px solid #1a56db;
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-right: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-login:hover {
+            background-color: #1a56db;
+            color: white;
+        }
+        
+        .btn-register {
+            background-color: #1a56db;
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-register:hover {
+            background-color: #1546b8;
+        }
+        
+        /* 轮播图区域 */
+        .hero-section {
+            padding: 40px 0;
+        }
+        
+        .hero-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+        
+        .carousel {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            height: 380px;
+        }
+        
+        .carousel-slide {
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+            padding: 40px;
+            color: white;
+            position: relative;
+        }
+        
+        .carousel-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+        }
+        
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            max-width: 70%;
+        }
+        
+        .slide-tag {
+            display: inline-block;
+            background-color: #ff6b35;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .slide-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+        
+        .slide-desc {
+            font-size: 16px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        
+        .slide-btn {
+            display: inline-block;
+            background-color: white;
+            color: #1a56db;
+            padding: 12px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .slide-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .carousel-indicators {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+        
+        .indicator.active {
+            background-color: white;
+        }
+        
+        .side-panel {
+            background-color: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .panel-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .announcement-list {
+            list-style: none;
+        }
+        
+        .announcement-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        
+        .announcement-item:last-child {
+            border-bottom: none;
+        }
+        
+        .announcement-date {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 5px;
+        }
+        
+        .announcement-title {
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 5px;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        
+        .announcement-title:hover {
+            color: #1a56db;
+        }
+        
+        /* 课程分类 */
+        .categories-section {
+            padding: 40px 0;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #222;
+        }
+        
+        .section-subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-top: 8px;
+        }
+        
+        .view-all {
+            color: #1a56db;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        .view-all i {
+            margin-left: 5px;
+            transition: transform 0.3s;
+        }
+        
+        .view-all:hover i {
+            transform: translateX(5px);
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 20px;
+        }
+        
+        .category-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .category-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+            height: 70px;
+            width: 70px;
+            line-height: 70px;
+            border-radius: 50%;
+            background-color: #f0f7ff;
+            color: #1a56db;
+            margin: 0 auto 15px;
+        }
+        
+        .category-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .category-count {
+            color: #888;
+            font-size: 13px;
+        }
+        
+        /* 热门课程 */
+        .courses-section {
+            padding: 40px 0;
+        }
+        
+        .courses-filter {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .filter-btn {
+            padding: 12px 25px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .filter-btn.active {
+            color: #1a56db;
+        }
+        
+        .filter-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #1a56db;
+            border-radius: 3px 3px 0 0;
+        }
+        
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+        
+        .course-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .course-img {
+            height: 180px;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .course-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: #ff6b35;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .course-content {
+            padding: 20px;
+        }
+        
+        .course-category {
+            color: #1a56db;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .course-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            height: 50px;
+            overflow: hidden;
+        }
+        
+        .course-instructor {
+            display: flex;
+            align-items: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .instructor-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .course-stats {
+            display: flex;
+            justify-content: space-between;
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+        
+        .course-stats span {
+            display: flex;
+            align-items: center;
+        }
+        
+        .course-stats i {
+            margin-right: 5px;
+        }
+        
+        .course-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .course-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ff6b35;
+        }
+        
+        .course-price.original {
+            color: #888;
+            text-decoration: line-through;
+            font-size: 16px;
+            font-weight: 400;
+            margin-left: 8px;
+        }
+        
+        .btn-enroll {
+            background-color: #1a56db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-enroll:hover {
+            background-color: #1546b8;
+            transform: translateY(-2px);
+        }
+        
+        /* 底部信息 */
+        footer {
+            background-color: #1e293b;
+            color: #cbd5e1;
+            padding: 60px 0 30px;
+            margin-top: 40px;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-col h3 {
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: #1a56db;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #1a56db;
+        }
+        
+        .contact-info {
+            list-style: none;
+        }
+        
+        .contact-info li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .contact-info i {
+            color: #1a56db;
+            margin-right: 10px;
+            margin-top: 3px;
+            font-size: 16px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-icon:hover {
+            background-color: #1a56db;
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #334155;
+            font-size: 14px;
+            color: #94a3b8;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1100px) {
+            .courses-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .nav-center {
+                display: none;
+            }
+            
+            .search-box input {
+                width: 180px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .courses-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .top-bar-content {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .search-box {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部通知栏 -->
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="promo-text">
+                <i class="fas fa-gift"></i>
+                限时优惠：新用户首月会员仅需9.9元，立即抢购！
+            </div>
+            <div class="top-links">
+                <a href="#"><i class="fas fa-question-circle"></i> 帮助中心</a>
+                <a href="#"><i class="fas fa-phone-alt"></i> 客服热线：400-123-4567</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主导航栏 -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="logo-text">学<span>课堂</span></div>
+                </a>
+                
+                <ul class="nav-center">
+                    <li><a href="#"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="#"><i class="fas fa-book-open"></i> 课程</a></li>
+                    <li><a href="#"><i class="fas fa-chalkboard-teacher"></i> 名师</a></li>
+                    <li><a href="#"><i class="fas fa-laptop-code"></i> 实战</a></li>
+                    <li><a href="#"><i class="fas fa-certificate"></i> 认证</a></li>
+                </ul>
+                
+                <div class="nav-right">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="搜索课程、老师或关键词...">
+                    </div>
+                    
+                    <div class="user-actions">
+                        <button class="btn-login">登录</button>
+                        <button class="btn-register">注册</button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 轮播图区域 -->
+    <section class="hero-section">
+        <div class="container hero-container">
+            <div class="carousel">
+                <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80');">
+                    <div class="slide-content">
+                        <span class="slide-tag">热门推荐</span>
+                        <h2 class="slide-title">零基础成为全栈工程师</h2>
+                        <p class="slide-desc">从HTML/CSS到React/Node.js，6个月系统学习，掌握企业级开发技能</p>
+                        <a href="#" class="slide-btn">立即查看</a>
+                    </div>
+                </div>
+                <div class="carousel-indicators">
+                    <div class="indicator active"></div>
+                    <div class="indicator"></div>
+                    <div class="indicator"></div>
+                    <div class="indicator"></div>
+                </div>
+            </div>
+            
+            <div class="side-panel">
+                <h3 class="panel-title"><i class="fas fa-bullhorn"></i> 平台公告</h3>
+                <ul class="announcement-list">
+                    <li class="announcement-item">
+                        <div class="announcement-date">2024-03-15</div>
+                        <div class="announcement-title">「春季学习计划」活动开始，完成学习赢好礼</div>
+                    </li>
+                    <li class="announcement-item">
+                        <div class="announcement-date">2024-03-10</div>
+                        <div class="announcement-title">新上线30门实战课程，涵盖AI、数据分析等领域</div>
+                    </li>
+                    <li class="announcement-item">
+                        <div class="announcement-date">2024-03-05</div>
+                        <div class="announcement-title">网站维护通知：3月8日凌晨2:00-4:00</div>
+                    </li>
+                    <li class="announcement-item">
+                        <div class="announcement-date">2024-03-01</div>
+                        <div class="announcement-title">名师直播预告：前端框架最新趋势分析</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 课程分类 -->
+    <section class="categories-section">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">热门课程分类</h2>
+                    <p class="section-subtitle">选择你感兴趣的学习方向，开始你的成长之旅</p>
+                </div>
+                <a href="#" class="view-all">查看全部分类 <i class="fas fa-arrow-right"></i></a>
+            </div>
+            
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h4 class="category-name">编程开发</h4>
+                    <div class="category-count">286门课程</div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4 class="category-name">数据科学</h4>
+                    <div class="category-count">142门课程</div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h4 class="category-name">设计创作</h4>
+                    <div class="category-count">98门课程</div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h4 class="category-name">职场技能</h4>
+                    <div class="category-count">203门课程</div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h4 class="category-name">语言学习</h4>
+                    <div class="category-count">167门课程</div>
+                </div>
+                
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h4 class="category-name">AI与人工智能</h4>
+                    <div class="category-count">89门课程</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 热门课程 -->
+    <section class="courses-section">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">精选热门课程</h2>
+                    <p class="section-subtitle">超过10万学员选择的优质课程，助力你的职业发展</p>
+                </div>
+                <a href="#" class="view-all">浏览全部课程 <i class="fas fa-arrow-right"></i></a>
+            </div>
+            
+            <div class="courses-filter">
+                <button class="filter-btn active">全部课程</button>
+                <button class="filter-btn">热门推荐</button>
+                <button class="filter-btn">新手入门</button>
+                <button class="filter-btn">限时优惠</button>
+                <button class="filter-btn">会员专享</button>
+            </div>
+            
+            <div class="courses-grid">
+                <!-- 课程卡片 1 -->
+                <div class="course-card">
+                    <div class="course-img" style="background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80');">
+                        <span class="course-badge">热销</span>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-category">编程开发 · Python</div>
+                        <h3 class="course-title">Python全栈开发：从零基础到高薪就业</h3>
+                        <div class="course-instructor">
+                            <div class="instructor-avatar" style="background-image: url('https://randomuser.me/api/portraits/men/32.jpg');"></div>
+                            <span>张明老师 · 高级开发工程师</span>
+                        </div>
+                        <div class="course-stats">
+                            <span><i class="far fa-clock"></i> 68课时</span>
+                            <span><i class="fas fa-signal"></i> 进阶</span>
+                            <span><i class="far fa-user"></i> 12,458人</span>
+                        </div>
+                        <div class="course-footer">
+                            <div>
+                                <span class="course-price">¥399</span>
+                                <span class="course-price original">¥899</span>
+                            </div>
+                            <button class="btn-enroll">加入学习</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 课程卡片 2 -->
+                <div class="course-card">
+                    <div class="course-img" style="background-image: url('https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80');">
+                        <span class="course-badge">免费</span>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-category">设计创作 · UI/UX</div>
+                        <h3 class="course-title">UI/UX设计入门：打造用户体验优秀的产品</h3>
+                        <div class="course-instructor">
+                            <div class="instructor-avatar" style="background-image: url('https://randomuser.me/api/portraits/women/44.jpg');"></div>
+                            <span>李思思老师 · 首席设计师</span>
+                        </div>
+                        <div class="course-stats">
+                            <span><i class="far fa-clock"></i> 42课时</span>
+                            <span><i class="fas fa-signal"></i> 入门</span>
+                            <span><i class="far fa-user"></i> 23,145人</span>
+                        </div>
+                        <div class="course-footer">
+                            <div>
+                                <span class="course-price">免费</span>
+                            </div>
+                            <button class="btn-enroll">立即学习</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 课程卡片 3 -->
+                <div class="course-card">
+                    <div class="course-img" style="background-image: url('https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80');">
+                        <span class="course-badge">新课</span>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-category">AI与人工智能</div>
+                        <h3 class="course-title">ChatGPT与AI应用开发实战课程</h3>
+                        <div class="course-instructor">
+                            <div class="instructor-avatar" style="background-image: url('https://randomuser.me/api/portraits/men/67.jpg');"></div>
+                            <span>王浩然老师 · AI专家</span>
+                        </div>
+                        <div class="course-stats">
+                            <span><i class="far fa-clock"></i> 56课时</span>
+                            <span><i class="fas fa-signal"></i> 中级</span>
+                            <span><i class="far fa-user"></i> 8,742人</span>
+                        </div>
+                        <div class="course-footer">
+                            <div>
+                                <span class="course-price">¥699</span>
+                            </div>
+                            <button class="btn-enroll">加入学习</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 课程卡片 4 -->
+                <div class="course-card">
+                    <div class="course-img" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80');">
+                        <span class="course-badge">会员</span>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-category">数据科学 · 分析</div>
+                        <h3 class="course-title">数据分析实战：Python与SQL商业分析</h3>
+                        <div class="course-instructor">
+                            <div class="instructor-avatar" style="background-image: url('https://randomuser.me/api/portraits/women/68.jpg');"></div>
+                            <span>刘雪老师 · 数据分析总监</span>
+                        </div>
+                        <div class="course-stats">
+                            <span><i class="far fa-clock"></i> 48课时</span>
+                            <span><i class="fas fa-signal"></i> 中级</span>
+                            <span><i class="far fa-user"></i> 6,328人</span>
+                        </div>
+                        <div class="course-footer">
+                            <div>
+                                <span class="course-price">¥599</span>
+                                <span class="course-price original">¥1,099</span>
+                            </div>
+                            <button class="btn-enroll">加入学习</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 底部信息 -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>关于学课堂</h3>
+                    <p style="margin-bottom: 20px; font-size: 14px;">学课堂致力于提供优质的在线教育服务，涵盖IT技术、职业发展、语言学习等多个领域，帮助学员提升技能，实现职业突破。</p>
+                    <div class="social-links">
+                        <a href="#" class="social-icon"><i class="fab fa-weixin"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-weibo"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-qq"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>快速链接</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">首页</a></li>
+                        <li><a href="#">课程中心</a></li>
+                        <li><a href="#">名师团队</a></li>
+                        <li><a href="#">企业合作</a></li>
+                        <li><a href="#">关于我们</a></li>
+                        <li><a href="#">加入我们</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>学习资源</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">免费课程</a></li>
+                        <li><a href="#">实战项目</a></li>
+                        <li><a href="#">学习路径</a></li>
+                        <li><a href="#">技术文章</a></li>
+                        <li><a href="#">常见问题</a></li>
+                        <li><a href="#">学习社区</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>联系我们</h3>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>北京市海淀区中关村大街1号</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <span>客服热线：400-123-4567</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <span>邮箱：support@xueketang.com</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <span>工作时间：周一至周五 9:00-18:00</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2024 学课堂 版权所有 | 京ICP备12345678号-1 | 本网站仅用于教学展示，不涉及任何商业用途</p>
+                <p style="margin-top: 10px;">页面设计：前端课程作业展示 | 图片素材来源：Unsplash</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 简单的交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 轮播图切换
+            const indicators = document.querySelectorAll('.indicator');
+            const carouselSlide = document.querySelector('.carousel-slide');
+            const slideImages = [
+                'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80'
+            ];
+            
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', function() {
+                    // 更新指示器状态
+                    indicators.forEach(ind => ind.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 切换轮播图背景
+                    carouselSlide.style.backgroundImage = `url('${slideImages[index]}')`;
+                    
+                    // 更新轮播图内容
+                    const titles = [
+                        '零基础成为全栈工程师',
+                        '数据分析师高薪就业班',
+                        'UI/UX设计大师课',
+                        '摄影与视频制作全攻略'
+                    ];
+                    
+                    const descs = [
+                        '从HTML/CSS到React/Node.js，6个月系统学习，掌握企业级开发技能',
+                        'Python/SQL/Tableau全栈数据技能，打造数据分析核心能力',
+                        '系统学习产品设计思维，掌握Figma/Photoshop等设计工具',
+                        '从相机操作到后期处理，掌握专业摄影与视频制作技能'
+                    ];
+                    
+                    document.querySelector('.slide-title').textContent = titles[index];
+                    document.querySelector('.slide-desc').textContent = descs[index];
+                });
+            });
+            
+            // 课程分类卡片点击效果
+            const categoryCards = document.querySelectorAll('.category-card');
+            categoryCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const categoryName = this.querySelector('.category-name').textContent;
+                    alert(`您选择了「${categoryName}」分类，将跳转到相关课程页面`);
+                });
+            });
+            
+            // 课程筛选标签切换
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const filterType = this.textContent;
+                    alert(`已切换到「${filterType}」筛选模式`);
+                });
+            });
+            
+            // 课程加入学习按钮
+            const enrollBtns = document.querySelectorAll('.btn-enroll');
+            enrollBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const courseCard = this.closest('.course-card');
+                    const courseTitle = courseCard.querySelector('.course-title').textContent;
+                    const coursePrice = courseCard.querySelector('.course-price').textContent;
+                    
+                    if (coursePrice === '免费') {
+                        alert(`您已成功加入免费课程「${courseTitle}」，现在可以开始学习了！`);
+                    } else {
+                        alert(`您选择了「${courseTitle}」课程，价格：${coursePrice}，即将跳转到支付页面`);
+                    }
+                });
+            });
+            
+            // 登录/注册按钮
+            const loginBtn = document.querySelector('.btn-login');
+            const registerBtn = document.querySelector('.btn-register');
+            
+            loginBtn.addEventListener('click', function() {
+                alert('跳转到登录页面（此功能需后端支持）');
+            });
+            
+            registerBtn.addEventListener('click', function() {
+                alert('跳转到注册页面（此功能需后端支持）');
+            });
+        });
+    </script>
+</body>
+</html>
