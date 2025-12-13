@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Расписание | Ли Цзе</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
+            color: white;
+            padding: 20px 30px;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            opacity: 0.9;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255,255,255,0.1);
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        .user-photo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255,255,255,0.3);
+            margin-right: 15px;
+        }
+        
+        .user-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-name {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .user-group {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 3px;
+        }
+        
+        /* Navigation Styles */
+        .nav-bar {
+            display: flex;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 0 30px;
+        }
+        
+        .nav-item {
+            padding: 15px 20px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #555;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .nav-item:hover {
+            color: #2c3e50;
+            background-color: #f0f0f0;
+        }
+        
+        .nav-item.active {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            background-color: #fff;
+        }
+        
+        /* Controls Styles */
+        .controls {
+            padding: 20px 30px;
+            background-color: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .controls-left {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .year-selector, .semester-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .selector-label {
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .selector-value {
+            background-color: #f8f9fa;
+            padding: 8px 15px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-weight: 500;
+            min-width: 120px;
+        }
+        
+        .refresh-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .refresh-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Days Tabs Styles */
+        .days-tabs {
+            display: flex;
+            background-color: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 0 30px;
+        }
+        
+        .day-tab {
+            padding: 15px 20px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #555;
+            cursor: pointer;
+            border-right: 1px solid #f0f0f0;
+            transition: all 0.2s;
+            text-align: center;
+            min-width: 80px;
+        }
+        
+        .day-tab:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .day-tab.active {
+            color: #3498db;
+            background-color: #f0f8ff;
+            font-weight: 600;
+        }
+        
+        .day-tab.all {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        /* Schedule Table Styles */
+        .schedule-container {
+            padding: 0 30px 30px;
+        }
+        
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .schedule-table th {
+            background-color: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #555;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .schedule-table td {
+            padding: 0;
+            vertical-align: top;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .time-cell {
+            padding: 15px;
+            font-weight: 500;
+            color: #555;
+            width: 120px;
+            background-color: #fafafa;
+            border-right: 1px solid #f0f0f0;
+        }
+        
+        .classes-cell {
+            padding: 15px;
+        }
+        
+        /* Lesson Card Styles */
+        .lesson-card {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .lesson-card.practice {
+            background-color: #f3e5f5;
+            border-left-color: #9c27b0;
+        }
+        
+        .lesson-type {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2196f3;
+            margin-bottom: 5px;
+        }
+        
+        .lesson-card.practice .lesson-type {
+            color: #9c27b0;
+        }
+        
+        .lesson-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+        
+        .lesson-details {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        
+        .lesson-weeks {
+            display: inline-block;
+            background-color: rgba(33, 150, 243, 0.1);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #2196f3;
+            margin-top: 5px;
+        }
+        
+        .lesson-card.practice .lesson-weeks {
+            background-color: rgba(156, 39, 176, 0.1);
+            color: #9c27b0;
+        }
+        
+        /* Empty cell style */
+        .empty-cell {
+            color: #999;
+            font-style: italic;
+            padding: 10px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .days-tabs {
+                overflow-x: auto;
+            }
+            
+            .day-tab {
+                min-width: 70px;
+            }
+            
+            .header, .nav-bar, .controls, .days-tabs, .schedule-container {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+            
+            .user-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .user-photo {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Расписание | Образовательный портал</h1>
+            <div class="user-info">
+                <img src="photo.jpg" alt="Фото Ли Цзе" class="user-photo">
+                <div class="user-text">
+                    <div class="user-name">Ли Цзе</div>
+                    <div class="user-group">IT(m)-1-24</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation -->
+        <div class="nav-bar">
+            <div class="nav-item active">Расписание</div>
+            <div class="nav-item">Успеваемость</div>
+            <div class="nav-item">Приказы</div>
+            <div class="nav-item">Оплата</div>
+        </div>
+        
+        <!-- Controls -->
+        <div class="controls">
+            <div class="controls-left">
+                <div class="year-selector">
+                    <div class="selector-label">Учебный год</div>
+                    <div class="selector-value">2025-26</div>
+                </div>
+                <div class="semester-selector">
+                    <div class="selector-label">Полугодие</div>
+                    <div class="selector-value">Осенний семестр</div>
+                </div>
+            </div>
+            <button class="refresh-btn">Обновить</button>
+        </div>
+        
+        <!-- Days Tabs -->
+        <div class="days-tabs">
+            <div class="day-tab" onclick="showDay('mon')">Пн</div>
+            <div class="day-tab active" onclick="showDay('tue')">Вт</div>
+            <div class="day-tab" onclick="showDay('wed')">Ср</div>
+            <div class="day-tab" onclick="showDay('thu')">Чт</div>
+            <div class="day-tab" onclick="showDay('fri')">Пт</div>
+            <div class="day-tab" onclick="showDay('sat')">Сб</div>
+            <div class="day-tab all" onclick="showDay('all')">Все</div>
+        </div>
+        
+        <!-- Schedule Table -->
+        <div class="schedule-container">
+            <!-- Monday Schedule -->
+            <div id="day-mon" class="day-schedule" style="display:none;">
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Время</th>
+                            <th>Понедельник</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="time-cell">08:00-09:20</td>
+                            <td class="classes-cell"><div class="empty-cell">Нет занятий</div></td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">09:30-10:50</td>
+                            <td class="classes-cell"><div class="empty-cell">Нет занятий</div></td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">12:30-13:50</td>
+                            <td class="classes-cell">
+                                <div class="lesson-card">
+                                    <div class="lesson-type">Лк. (Корпус №5, ауд.2)</div>
+                                    <div class="lesson-name">Применение веб-систем дистанционного образования</div>
+                                    <div class="lesson-details">Жолочубеков Н.Ж. | IT(m)-1-24</div>
+                                    <div class="lesson-weeks">нед. [1-16]</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">14:00-15:20</td>
+                            <td class="classes-cell"><div class="empty-cell">Нет занятий</div></td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">15:30-16:50</td>
+                            <td class="classes-cell"><div class="empty-cell">Нет занятий</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Tuesday Schedule (Default) -->
+            <div id="day-tue" class="day-schedule">
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Время</th>
+                            <th>Вторник</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="time-cell">08:00-09:20</td>
+                            <td class="classes-cell">
+                                <div class="lesson-card">
+                                    <div class="lesson-type">Лк. (Корпус №5, ауд.4)</div>
+                                    <div class="lesson-name">Администрирование компьютерных систем</div>
+                                    <div class="lesson-details">Нааматова Ж.Б. | IT(m)-1-24</div>
+                                    <div class="lesson-weeks">нед. [1-16]</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">09:30-10:50</td>
+                            <td class="classes-cell">
+                                <div class="lesson-card">
+                                    <div class="lesson-type">Лк. (Корпус №5, ауд.4)</div>
+                                    <div class="lesson-name">Администрирование компьютерных систем</div>
+                                    <div class="lesson-details">Нааматова Ж.Б. | IT(m)-1-24</div>
+                                    <div class="lesson-weeks">нед. [1-16]</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">12:30-13:50</td>
+                            <td class="classes-cell"><div class="empty-cell">Нет занятий</div></td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">14:00-15:20</td>
+                            <td class="classes-cell"><div class="empty-cell">Нет занятий</div></td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">15:30-16:50</td>
+                            <td class="classes-cell"><div class="empty-cell">Нет занятий</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Wednesday Schedule -->
+            <div id="day-wed" class="day-schedule" style="display:none;">
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Время</th>
+                            <th>Среда</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="time-cell">08:00-09:20</td>
+                            <td class="classes-cell">
+                                <div class="lesson-card">
+                                    <div class="lesson-type">Лк. (Корпус №5, ауд.212)</div>
+                                    <div class="lesson-name">Администрирование компьютерных систем</div>
+                                    <div class="lesson-details">Нааматова Ж.Б. | IT(m)-1-24</div>
+                                    <div class="lesson-weeks">нед. [1-16]</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">09:30-10:50</td>
+                            <td class="classes-cell">
+                                <div class="lesson-card">
+                                    <div class="lesson-type">Лк. (Корпус №5, ауд.7)</div>
+                                    <div class="lesson-name">Администрирование компьютерных систем</div>
+                                    <div class="lesson-details">Нааматова Ж.Б. | IT(m)-1-24</div>
+                                    <div class="lesson-weeks">нед. [1-16]</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">12:30-13:50</td>
+                            <td class="classes-cell"><div class="empty-cell">Нет занятий</div></td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">14:00-15:20</td>
+                            <td class="classes-cell"><div class="empty-cell">Нет занятий</div></td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">15:30-16:50</td>
+                            <td class="classes-cell"><div class="empty-cell">Нет занятий</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Thursday Schedule -->
+            <div id="day-thu" class="day-schedule" style="display:none;">
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Время</th>
+                            <th>Четверг</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="time-cell">08:00-09:20</td>
+                            <td class="classes-cell">
+                                <div class="lesson-card">
+                                    <div class="lesson-type">Лк. (Корпус №5, ауд.4)</div>
+                                    <div class="lesson-name">Администрирование компьютерных систем</div>
+                                    <div class="lesson-details">Нааматова Ж.Б. | IT(m)-1-24</div>
+                                    <div class="lesson-weeks">нед. [1-16]</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">09:30-10:50</td>
+                            <td class="classes-cell">
+                                <div class="lesson-card">
+                                    <div class="lesson-type">Лк. (Корпус №5, ауд.4)</div>
+                                    <div class="lesson-name">Администрирование компьютерных систем</div>
+                                    <div class="lesson-details">Нааматова Ж.Б. | IT(m)-1-24</div>
+                                    <div class="lesson-weeks">нед. [1-16]</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">12:30-13:50</td>
+                            <td class="classes-cell">
+                                <div class="lesson-card">
+                                    <div class="lesson-type">Лк. (Корпус №5, ауд.3)</div>
+                                    <div class="lesson-name">Методика обучения информатике в высшей школе</div>
+                                    <div class="lesson-details">Нааматова Ж.Б. | IT(m)-1-24</div>
+                                    <div class="lesson-weeks">нед. [1-16]</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">14:00-15:20</td>
+                            <td class="classes-cell">
+                                <div class="lesson-card">
+                                    <div class="lesson-type">Лк. (Корпус №5, ауд.3)</div>
+                                    <div class="lesson-name">Методика обучения информатике в профильной школе</div>
+                                    <div class="lesson-details">Нааматова Ж.Б. | IT(m)-1-24</div>
+                                    <div class="lesson-weeks">нед. [1-16]</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">15:30-16:50</td>
+                            <td class="classes-cell">
+                                <div class="lesson-card">
+                                    <div class="lesson-type">Лк. (Корпус №5, ауд.3)</div>
+                                    <div class="lesson-name">Методика обучения информатике в профильной школе</div>
+                                    <div class="lesson-details">Нааматова Ж.Б. | IT(m)-1-24</div>
+                                    <div class="lesson-weeks">нед. [1-16]</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Friday Schedule -->
+            <div id="day-fri" class="day-schedule" style="display:none;">
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Время</th>
+                            <th>Пятница</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="time-cell">08:00-09:20</td>
+                            <td class="classes-cell">
+                                <div class="lesson-card">
+                                    <div class="lesson-type">Лк. (Корпус №5, ауд.4)</div>
+                                    <div class="lesson-name">Методика обучения информатике в профильной школе</div>
+                                    <div class="lesson-details">Нааматова Ж.Б. | IT(m)-1-24</div>
+                                    <div class="lesson-weeks">нед. [1-16]</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">09:30-10:50</td>
+                            <td class="classes-cell">
+                                <div class="lesson-card">
+                                    <div class="lesson-type">Лк. (Корпус №5, ауд.4)</div>
+                                    <div class="lesson-name">Методика обучения информатике в профильной школе</div>
+                                    <div class="lesson-details">Нааматова Ж.Б. | IT(m)-1-24</div>
+                                    <div class="lesson-weeks">нед. [1-16]</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">12:30-13:50</td>
+                            <td class="classes-cell">
+                                <div class="lesson-card">
+                                    <div class="lesson-type">Лк. (Корпус №5, ауд.3)</div>
+                                    <div class="lesson-name">Программное обеспечение для разработки электронных образовательных ресурсов</div>
+                                    <div class="lesson-details">Нааматова Ж.Б. | IT(m)-1-24</div>
+                                    <div class="lesson-weeks">нед. [1-16]</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">14:00-15:20</td>
+                            <td class="classes-cell">
+                                <div class="lesson-card">
+                                    <div class="lesson-type">Лк. (Корпус №5, ауд.3)</div>
+                                    <div class="lesson-name">Методика обучения информатике в высшей школе</div>
+                                    <div class="lesson-details">Нааматова Ж.Б. | IT(m)-1-24</div>
+                                    <div class="lesson-weeks">нед. [1-16]</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">15:30-16:50</td>
+                            <td class="classes-cell">
+                                <div class="lesson-card">
+                                    <div class="lesson-type">Лк. (Корпус №5, ауд.4)</div>
+                                    <div class="lesson-name">Методика обучения информатике в профильной школе</div>
+                                    <div class="lesson-details">Нааматова Ж.Б. | IT(m)-1-24</div>
+                                    <div class="lesson-weeks">нед. [1-16]</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Saturday Schedule (CORRECTED) -->
+            <div id="day-sat" class="day-schedule" style="display:none;">
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Время</th>
+                            <th>Суббота</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="time-cell">08:00-09:20</td>
+                            <td class="classes-cell"><div class="empty-cell">Нет занятий</div></td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">09:30-10:50</td>
+                            <td class="classes-cell"><div class="empty-cell">Нет занятий</div></td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">11:00-12:20</td>
+                            <td class="classes-cell"><div class="empty-cell">Нет занятий</div></td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">12:30-13:50</td>
+                            <td class="classes-cell">
+                                <div class="lesson-card">
+                                    <div class="lesson-type">Лк. (Корпус №5, ауд.2)</div>
+                                    <div class="lesson-name">Применение веб-систем дистанционного образования</div>
+                                    <div class="lesson-details">Жолочубеков Н.Ж. | IT(m)-1-24</div>
+                                    <div class="lesson-weeks">нед. [1-16]</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">14:00-15:20</td>
+                            <td class="classes-cell">
+                                <div class="lesson-card">
+                                    <div class="lesson-type">Лк. (Корпус №5, ауд.2)</div>
+                                    <div class="lesson-name">Применение веб-систем дистанционного образования</div>
+                                    <div class="lesson-details">Жолочубеков Н.Ж. | IT(m)-1-24</div>
+                                    <div class="lesson-weeks">нед. [1-16]</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">15:30-16:50</td>
+                            <td class="classes-cell">
+                                <div class="lesson-card">
+                                    <div class="lesson-type">Лк. (Корпус №5, ауд.2)</div>
+                                    <div class="lesson-name">Применение веб-систем дистанционного образования</div>
+                                    <div class="lesson-details">Жолочубеков Н.Ж. | IT(m)-1-24</div>
+                                    <div class="lesson-weeks">нед. [1-16]</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">17:00-18:20</td>
+                            <td class="classes-cell"><div class="empty-cell">Нет занятий</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- All Schedule (Collapsed view) -->
+            <div id="day-all" class="day-schedule" style="display:none;">
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>День</th>
+                            <th>Время</th>
+                            <th>Предмет</th>
+                            <th>Аудитория</th>
+                            <th>Преподаватель</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Monday -->
+                        <tr>
+                            <td>Понедельник</td>
+                            <td>12:30-13:50</td>
+                            <td>Применение веб-систем дистанционного образования</td>
+                            <td>Корпус №5, ауд.2</td>
+                            <td>Жолочубеков Н.Ж.</td>
+                        </tr>
+                        
+                        <!-- Tuesday -->
+                        <tr>
+                            <td>Вторник</td>
+                            <td>08:00-09:20</td>
+                            <td>Администрирование компьютерных систем</td>
+                            <td>Корпус №5, ауд.4</td>
+                            <td>Нааматова Ж.Б.</td>
+                        </tr>
+                        <tr>
+                            <td>Вторник</td>
+                            <td>09:30-10:50</td>
+                            <td>Администрирование компьютерных систем</td>
+                            <td>Корпус №5, ауд.4</td>
+                            <td>Нааматова Ж.Б.</td>
+                        </tr>
+                        
+                        <!-- Wednesday -->
+                        <tr>
+                            <td>Среда</td>
+                            <td>08:00-09:20</td>
+                            <td>Администрирование компьютерных систем</td>
+                            <td>Корпус №5, ауд.212</td>
+                            <td>Нааматова Ж.Б.</td>
+                        </tr>
+                        <tr>
+                            <td>Среда</td>
+                            <td>09:30-10:50</td>
+                            <td>Администрирование компьютерных систем</td>
+                            <td>Корпус №5, ауд.7</td>
+                            <td>Нааматова Ж.Б.</td>
+                        </tr>
+                        
+                        <!-- Thursday -->
+                        <tr>
+                            <td>Четверг</td>
+                            <td>08:00-09:20</td>
+                            <td>Администрирование компьютерных систем</td>
+                            <td>Корпус №5, ауд.4</td>
+                            <td>Нааматова Ж.Б.</td>
+                        </tr>
+                        <tr>
+                            <td>Четверг</td>
+                            <td>09:30-10:50</td>
+                            <td>Администрирование компьютерных систем</td>
+                            <td>Корпус №5, ауд.4</td>
+                            <td>Нааматова Ж.Б.</td>
+                        </tr>
+                        <tr>
+                            <td>Четверг</td>
+                            <td>12:30-13:50</td>
+                            <td>Методика обучения информатике в высшей школе</td>
+                            <td>Корпус №5, ауд.3</td>
+                            <td>Нааматова Ж.Б.</td>
+                        </tr>
+                        <tr>
+                            <td>Четверг</td>
+                            <td>14:00-15:20</td>
+                            <td>Методика обучения информатике в профильной школе</td>
+                            <td>Корпус №5, ауд.3</td>
+                            <td>Нааматова Ж.Б.</td>
+                        </tr>
+                        <tr>
+                            <td>Четверг</td>
+                            <td>15:30-16:50</td>
+                            <td>Методика обучения информатике в профильной школе</td>
+                            <td>Корпус №5, ауд.3</td>
+                            <td>Нааматова Ж.Б.</td>
+                        </tr>
+                        
+                        <!-- Friday -->
+                        <tr>
+                            <td>Пятница</td>
+                            <td>08:00-09:20</td>
+                            <td>Методика обучения информатике в профильной школе</td>
+                            <td>Корпус №5, ауд.4</td>
+                            <td>Нааматова Ж.Б.</td>
+                        </tr>
+                        <tr>
+                            <td>Пятница</td>
+                            <td>09:30-10:50</td>
+                            <td>Методика обучения информатике в профильной школе</td>
+                            <td>Корпус №5, ауд.4</td>
+                            <td>Нааматова Ж.Б.</td>
+                        </tr>
+                        <tr>
+                            <td>Пятница</td>
+                            <td>12:30-13:50</td>
+                            <td>Программное обеспечение для разработки электронных образовательных ресурсов</td>
+                            <td>Корпус №5, ауд.3</td>
+                            <td>Нааматова Ж.Б.</td>
+                        </tr>
+                        <tr>
+                            <td>Пятница</td>
+                            <td>14:00-15:20</td>
+                            <td>Методика обучения информатике в высшей школе</td>
+                            <td>Корпус №5, ауд.3</td>
+                            <td>Нааматова Ж.Б.</td>
+                        </tr>
+                        <tr>
+                            <td>Пятница</td>
+                            <td>15:30-16:50</td>
+                            <td>Методика обучения информатике в профильной школе</td>
+                            <td>Корпус №5, ауд.4</td>
+                            <td>Нааматова Ж.Б.</td>
+                        </tr>
+                        
+                        <!-- Saturday (CORRECTED) -->
+                        <tr>
+                            <td>Суббота</td>
+                            <td>12:30-13:50</td>
+                            <td>Применение веб-систем дистанционного образования</td>
+                            <td>Корпус №5, ауд.2</td>
+                            <td>Жолочубеков Н.Ж.</td>
+                        </tr>
+                        <tr>
+                            <td>Суббота</td>
+                            <td>14:00-15:20</td>
+                            <td>Применение веб-систем дистанционного образования</td>
+                            <td>Корпус №5, ауд.2</td>
+                            <td>Жолочубеков Н.Ж.</td>
+                        </tr>
+                        <tr>
+                            <td>Суббота</td>
+                            <td>15:30-16:50</td>
+                            <td>Применение веб-систем дистанционного образования</td>
+                            <td>Корпус №5, ауд.2</td>
+                            <td>Жолочубеков Н.Ж.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to switch between days
+        function showDay(day) {
+            // Hide all day schedules
+            const daySchedules = document.querySelectorAll('.day-schedule');
+            daySchedules.forEach(schedule => {
+                schedule.style.display = 'none';
+            });
+            
+            // Remove active class from all day tabs
+            const dayTabs = document.querySelectorAll('.day-tab');
+            dayTabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected day schedule
+            document.getElementById('day-' + day).style.display = 'block';
+            
+            // Add active class to selected day tab
+            event.target.classList.add('active');
+        }
+        
+        // Navigation tab switching
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                navItems.forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+                // In a real application, here would be code to load different sections
+                alert('В реальном приложении здесь загружался бы соответствующий раздел');
+            });
+        });
+        
+        // Refresh button functionality
+        document.querySelector('.refresh-btn').addEventListener('click', function() {
+            alert('Расписание обновлено!');
+            // In a real application, here would be code to refresh data from server
+        });
+        
+        // Set initial active day tab
+        document.querySelector('.day-tab.active').click();
+    </script>
+</body>
+</html>
